@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Upload File</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  </head>
+
+  <body
+    class="relative min-h-screen flex flex-col items-center justify-center bg-[url('https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=1740&q=80')] bg-cover bg-center"
+  >
+    <!-- Background overlay for blur -->
+    <div class="absolute inset-0 bg-black/40 backdrop-blur-lg"></div>
+
+    <main class="relative z-10 w-full flex flex-col items-center">
+      <!-- Show Button -->
+      <button
+        type="button"
+        id="showpopbtn"
+        onclick="showpop()"
+        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2.5 mb-6 transition-all duration-300"
+      >
+        CLICK ME
+      </button>
+
+      <!-- Popup Form -->
+      <form action="/upload" method="POST" enctype="multipart/form-data"
+      class="relative popup hidden flex-col backdrop-blur-md bg-white/10 border border-white/20 shadow-2xl rounded-2xl p-6 w-[90%] max-w-lg transition-all duration-300"
+    >
+      <button type="button" onclick="closepop()" class="absolute top-1 right-2 text-white text-2xl hover:text-gray-300 focus:outline-none" title="Close">
+        &times;
+      </button>
+    
+      <div class="flex items-center justify-center">
+        <label for="dropzone-file"
+          class="flex flex-col items-center justify-center w-full h-64 border-2 border-dashed border-gray-400 rounded-xl cursor-pointer bg-white/20 hover:bg-white/30 transition-all duration-300"
+        >
+          <div class="flex flex-col items-center justify-center pt-5 pb-6 text-center">
+            <svg class="w-10 h-10 mb-3 text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+            </svg>
+            <p class="mb-2 text-sm text-gray-100">
+              <span class="font-semibold">Click to upload</span> or drag and drop
+            </p>
+            <p class="text-xs text-gray-300">
+              SVG, PNG, JPG or GIF (MAX. 800×400px)
+            </p>
+          </div>
+          <input id="dropzone-file" type="file" name="file" class="hidden" />
+        </label>
+      </div>
+    
+      <button type="submit"
+        class="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2.5 transition-all duration-300">
+        UPLOAD
+      </button>
+    </form>
+    
+    <div class="files flex flex-col gap-4 mt-8 w-[90%] max-w-lg">
+      <% if (files && files.length > 0) { %>
+        <% files.forEach(function(file) { %>
+          <div class="file-item bg-white/10 border border-white/20 rounded-lg p-4 flex items-center justify-between">
+            <span class="text-gray-200"><%= file.fileName %></span>
+            <a href="<%= file.imageUrl %>" download class="text-blue-400 hover:underline">Download</a>
+          </div>
+        <% }); %>
+      <% } else { %>
+        <p class="text-gray-300">No files uploaded yet.</p>
+      <% } %>
+    </div>
+    
+
+    </main>
+
+    <script>
+      function showpop() {
+        const popup = document.querySelector(".popup");
+        popup.classList.remove("hidden");
+        popup.classList.add("flex");
+        document.getElementById("showpopbtn").style.display = "none";
+      }
+
+      function closepop() {
+        const popup = document.querySelector(".popup");
+        popup.classList.add("hidden");
+        document.getElementById("showpopbtn").style.display = "inline-block";
+      }
+    </script>
+  </body>
+</html>
